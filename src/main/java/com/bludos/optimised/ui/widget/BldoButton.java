@@ -1,5 +1,6 @@
 package com.bludos.optimised.ui.widget;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -20,7 +21,7 @@ public class BldoButton extends Button {
         g.fill(getX(), getY() + height - 1, getX() + width, getY() + height, border);
 
         g.drawCenteredString(
-            this.minecraft.font,
+            Minecraft.getInstance().font,
             getMessage(),
             getX() + width / 2,
             getY() + (height - 8) / 2,

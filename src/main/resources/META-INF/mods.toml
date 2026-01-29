@@ -1,16 +1,17 @@
-modLoader="javafml" #mandatory
-loaderVersion="[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+modLoader="javafml"
+loaderVersion="[47,)"
 license="All rights reserved"
-issueTrackerURL="https://github.com/USER/REPO/issues" #optional
+issueTrackerURL="https://github.com/USER/REPO/issues"
 
-[[mods]] #mandatory
-modId="bldooptimised" #mandatory
-version="1.0.0" #mandatory
-displayName="BldoOptimised" #mandatory
-displayURL="https://github.com/USER/REPO" #optional
-logoFile="examplemod.png" #optional
-credits="Thanks for this mod" #optional
-authors="Author" #optional
+[[mods]]
+modId="bldooptimised"
+version="1.0.0"
+displayName="BldoOptimised"
+displayURL="https://github.com/USER/REPO"
+authors="Author"
 description='''
-This is a placeholder description for the mod.
+BldoOptimised
 '''
+
+[[mixins]]
+config="bldooptimised.mixins.json"
