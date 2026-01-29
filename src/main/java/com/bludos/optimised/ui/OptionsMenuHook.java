@@ -12,19 +12,29 @@ public class OptionsMenuHook {
 
     @SubscribeEvent
     public static void onScreenInit(ScreenEvent.Init.Post event) {
-        if (event.getScreen() instanceof OptionsScreen screen) {
+        if (!(event.getScreen() instanceof OptionsScreen screen)) return;
 
-            int x = screen.width / 2 - 155;
-            int y = screen.height / 6 + 168;
+        int centerX = screen.width / 2;
+        int bottomY = screen.height - 29;
 
-            event.addListener(
-                Button.builder(
-                    Component.literal("Bldo Optimised"),
-                    btn -> screen.getMinecraft().setScreen(
+        Button bldoButton = Button.builder(
+                Component.literal("Bldo Optimised"),
+                btn -> screen.getMinecraft().setScreen(
                         new BldoOptimisedScreen(screen)
-                    )
-                ).bounds(x, y, 150, 20).build()
-            );
-        }
+                )
+        ).bounds(centerX - 155, bottomY, 150, 20).build();
+
+        event.addListener(bldoButton);
+
+        
+        event.getListeners().stream()
+                .filter(w -> w instanceof Button btn
+                        && btn.getMessage().getString().equals("Done"))
+                .findFirst()
+                .ifPresent(w -> {
+                    Button done = (Button) w;
+                    done.setX(centerX + 5);
+                    done.setY(bottomY);
+                });
     }
 }
