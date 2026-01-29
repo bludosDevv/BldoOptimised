@@ -1,7 +1,8 @@
 package com.bludos.optimised.ui;
 
-import net.minecraft.client.gui.screens.OptionsScreen;
+import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.OptionsScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.client.event.ScreenEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,15 +27,14 @@ public class OptionsMenuHook {
 
         event.addListener(bldoButton);
 
-        
-        event.getListeners().stream()
-                .filter(w -> w instanceof Button btn
-                        && btn.getMessage().getString().equals("Done"))
-                .findFirst()
-                .ifPresent(w -> {
-                    Button done = (Button) w;
-                    done.setX(centerX + 5);
-                    done.setY(bottomY);
-                });
+        for (var child : screen.children()) {
+            if (child instanceof Button button) {
+                if (button.getMessage().getString().equals("Done")) {
+                    button.setX(centerX + 5);
+                    button.setY(bottomY);
+                    break;
+                }
+            }
+        }
     }
 }
