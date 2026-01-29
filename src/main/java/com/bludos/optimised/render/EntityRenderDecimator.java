@@ -1,14 +1,14 @@
 package com.bludos.optimised.render;
 
-public class EntityRenderDecimator {
+import com.bludos.optimised.config.BldoRuntimeConfig;
 
-    // Render entities every N frames
-    public static int ENTITY_FRAME_DIVISOR = 2;
+public class EntityRenderDecimator {
 
     private static int frameCounter = 0;
 
     public static boolean shouldRenderEntity() {
         frameCounter++;
-        return frameCounter % ENTITY_FRAME_DIVISOR == 0;
+        int div = Math.max(1, BldoRuntimeConfig.entityRenderDivisor);
+        return frameCounter % div == 0;
     }
 }

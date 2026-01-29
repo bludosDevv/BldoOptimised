@@ -16,25 +16,28 @@ public class OptionsMenuHook {
         if (!(event.getScreen() instanceof OptionsScreen screen)) return;
 
         int centerX = screen.width / 2;
-        int bottomY = screen.height - 29;
+int baseY = screen.height / 6 + 168; // vanilla bottom row Y
 
-        Button bldoButton = Button.builder(
-                Component.literal("Bldo Optimised"),
-                btn -> screen.getMinecraft().setScreen(
-                        new BldoOptimisedScreen(screen)
-                )
-        ).bounds(centerX - 155, bottomY, 150, 20).build();
+// Left button (Bldo)
+Button bldoButton = Button.builder(
+        Component.literal("Bldo Optimised"),
+        btn -> screen.getMinecraft().setScreen(
+                new BldoOptimisedScreen(screen)
+        )
+).bounds(centerX - 155, baseY, 150, 20).build();
 
-        event.addListener(bldoButton);
+event.addListener(bldoButton);
 
-        for (var child : screen.children()) {
-            if (child instanceof Button button) {
-                if (button.getMessage().getString().equals("Done")) {
-                    button.setX(centerX + 5);
-                    button.setY(bottomY);
-                    break;
-                }
-            }
+// Move Done button to right slot
+for (var child : screen.children()) {
+    if (child instanceof Button button) {
+        if (button.getMessage().getString().equals("Done")) {
+            button.setX(centerX + 5);
+            button.setY(baseY);
+            button.setWidth(150);
+            break;
         }
+    }
+}
     }
 }

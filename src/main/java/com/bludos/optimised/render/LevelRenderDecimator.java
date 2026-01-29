@@ -2,8 +2,7 @@ package com.bludos.optimised.render;
 
 public class LevelRenderDecimator {
 
-    // Render world every N frames
-    public static final int FRAME_DIVISOR = 2;
+    public static int FRAME_DIVISOR = 2;
 
     private static int frameCounter = 0;
 
