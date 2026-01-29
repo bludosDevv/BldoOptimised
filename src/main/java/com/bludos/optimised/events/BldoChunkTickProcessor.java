@@ -18,16 +18,15 @@ public class BldoChunkTickProcessor {
         if (!BldoRuntimeState.chunkBudgetEnabled) return;
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.level == null) return;
+        if (mc.level == null || mc.levelRenderer == null) return;
+
+        var dispatcher = mc.levelRenderer.getChunkRenderDispatcher();
+        var camPos = mc.gameRenderer.getMainCamera().getPosition();
 
         for (int i = 0; i < BldoChunkBudget.maxChunkBuildsPerTick; i++) {
             var chunk = BldoChunkQueue.poll();
             if (chunk == null) break;
-
-            chunk.rebuildChunkAsync(
-                mc.level.getChunkSource().getLightEngine(),
-                mc.gameRenderer.getMainCamera().getPosition()
-            );
+            chunk.rebuildChunkAsync(dispatcher, camPos);
         }
     }
 }
