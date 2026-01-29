@@ -3,6 +3,7 @@
   "package": "com.bludos.optimised.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "ModelBlockRendererMixin"
+    "ChunkRenderDispatcherMixin",
+    "TextureAnimationMixin"
   ]
 }

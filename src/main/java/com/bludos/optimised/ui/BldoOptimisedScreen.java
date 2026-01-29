@@ -1,6 +1,6 @@
 package com.bludos.optimised.ui;
 
-import com.bludos.optimised.render.BldoCullingState;
+import com.bludos.optimised.runtime.BldoRuntimeState;
 import com.bludos.optimised.ui.widget.BldoButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -27,10 +27,10 @@ public class BldoOptimisedScreen extends Screen {
                 y,
                 200,
                 20,
-                getCullingLabel(),
+                getChunkLabel(),
                 b -> {
-                    BldoCullingState.enabled = !BldoCullingState.enabled;
-                    b.setMessage(getCullingLabel());
+                    BldoRuntimeState.chunkBudgetEnabled = !BldoRuntimeState.chunkBudgetEnabled;
+                    b.setMessage(getChunkLabel());
                 }
             )
         );
@@ -41,8 +41,11 @@ public class BldoOptimisedScreen extends Screen {
                 y + 28,
                 200,
                 20,
-                Component.literal("More features soon"),
-                b -> {}
+                getAnimLabel(),
+                b -> {
+                    BldoRuntimeState.disableAnimations = !BldoRuntimeState.disableAnimations;
+                    b.setMessage(getAnimLabel());
+                }
             )
         );
 
@@ -58,10 +61,16 @@ public class BldoOptimisedScreen extends Screen {
         );
     }
 
-    private Component getCullingLabel() {
-        return BldoCullingState.enabled
-            ? Component.literal("Aggressive Culling: ON")
-            : Component.literal("Aggressive Culling: OFF");
+    private Component getChunkLabel() {
+        return BldoRuntimeState.chunkBudgetEnabled
+            ? Component.literal("Chunk Budgeting: ON")
+            : Component.literal("Chunk Budgeting: OFF");
+    }
+
+    private Component getAnimLabel() {
+        return BldoRuntimeState.disableAnimations
+            ? Component.literal("Disable Animations: ON")
+            : Component.literal("Disable Animations: OFF");
     }
 
     @Override
