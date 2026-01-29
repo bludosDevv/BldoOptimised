@@ -1,10 +1,9 @@
 package com.bludos.optimised.ui;
 
-import com.bludos.optimised.config.BldoRuntimeConfig;
-import com.bludos.optimised.render.LevelRenderDecimator;
+import com.bludos.optimised.render.BldoCullingState;
+import com.bludos.optimised.ui.widget.BldoButton;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
@@ -19,78 +18,57 @@ public class BldoOptimisedScreen extends Screen {
 
     @Override
     protected void init() {
-        int centerX = this.width / 2;
-        int startY = this.height / 4;
+        int cx = this.width / 2;
+        int y = this.height / 4;
 
         this.addRenderableWidget(
-            Button.builder(
-                getEntityRenderLabel(),
-                btn -> {
-                    if (BldoRuntimeConfig.entityRenderDivisor == 1) {
-                        BldoRuntimeConfig.entityRenderDivisor = 2;
-                    } else if (BldoRuntimeConfig.entityRenderDivisor == 2) {
-                        BldoRuntimeConfig.entityRenderDivisor = 3;
-                    } else {
-                        BldoRuntimeConfig.entityRenderDivisor = 1;
-                    }
-                    btn.setMessage(getEntityRenderLabel());
+            new BldoButton(
+                cx - 100,
+                y,
+                200,
+                20,
+                getCullingLabel(),
+                b -> {
+                    BldoCullingState.enabled = !BldoCullingState.enabled;
+                    b.setMessage(getCullingLabel());
                 }
-            ).bounds(centerX - 100, startY, 200, 20).build()
+            )
         );
 
         this.addRenderableWidget(
-            Button.builder(
-                getWorldRenderLabel(),
-                btn -> {
-                    if (LevelRenderDecimator.FRAME_DIVISOR == 1) {
-                        LevelRenderDecimator.FRAME_DIVISOR = 2;
-                    } else if (LevelRenderDecimator.FRAME_DIVISOR == 2) {
-                        LevelRenderDecimator.FRAME_DIVISOR = 3;
-                    } else {
-                        LevelRenderDecimator.FRAME_DIVISOR = 1;
-                    }
-                    btn.setMessage(getWorldRenderLabel());
-                }
-            ).bounds(centerX - 100, startY + 24, 200, 20).build()
+            new BldoButton(
+                cx - 100,
+                y + 28,
+                200,
+                20,
+                Component.literal("More features soon"),
+                b -> {}
+            )
         );
 
         this.addRenderableWidget(
-            Button.builder(
+            new BldoButton(
+                cx + 5,
+                this.height - 29,
+                150,
+                20,
                 Component.literal("Done"),
                 b -> onClose()
-            ).bounds(centerX - 75, this.height - 29, 150, 20).build()
+            )
         );
     }
 
-    private Component getEntityRenderLabel() {
-        return switch (BldoRuntimeConfig.entityRenderDivisor) {
-            case 1 -> Component.literal("Entities: Full");
-            case 2 -> Component.literal("Entities: Balanced");
-            case 3 -> Component.literal("Entities: Aggressive");
-            default -> Component.literal("Entities: Custom");
-        };
-    }
-
-    private Component getWorldRenderLabel() {
-        return switch (LevelRenderDecimator.FRAME_DIVISOR) {
-            case 1 -> Component.literal("World Rendering: Full");
-            case 2 -> Component.literal("World Rendering: ~30 FPS");
-            case 3 -> Component.literal("World Rendering: ~20 FPS");
-            default -> Component.literal("World Rendering: Custom");
-        };
+    private Component getCullingLabel() {
+        return BldoCullingState.enabled
+            ? Component.literal("Aggressive Culling: ON")
+            : Component.literal("Aggressive Culling: OFF");
     }
 
     @Override
-    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
-        gfx.fill(0, 0, width, height, 0xAA000000);
-        super.render(gfx, mouseX, mouseY, partialTick);
-        gfx.drawCenteredString(
-            this.font,
-            this.title,
-            this.width / 2,
-            20,
-            0xFFFFFF
-        );
+    public void render(GuiGraphics g, int mx, int my, float pt) {
+        g.fill(0, 0, width, height, 0xAA000000);
+        super.render(g, mx, my, pt);
+        g.drawCenteredString(this.font, this.title, this.width / 2, 20, 0xFFFFFF);
     }
 
     @Override
