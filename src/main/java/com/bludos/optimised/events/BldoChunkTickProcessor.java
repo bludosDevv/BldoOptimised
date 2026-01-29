@@ -17,15 +17,16 @@ public class BldoChunkTickProcessor {
         if (e.phase != TickEvent.Phase.END) return;
         if (!BldoRuntimeState.chunkBudgetEnabled) return;
 
-        var mc = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getInstance();
         if (mc.level == null) return;
 
         for (int i = 0; i < BldoChunkBudget.maxChunkBuildsPerTick; i++) {
             var chunk = BldoChunkQueue.poll();
             if (chunk == null) break;
+
             chunk.rebuildChunkAsync(
-                mc.getChunkSource().getLightEngine(),
-                mc.getMainCamera().getPosition()
+                mc.level.getChunkSource().getLightEngine(),
+                mc.gameRenderer.getMainCamera().getPosition()
             );
         }
     }
