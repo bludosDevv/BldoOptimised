@@ -1,0 +1,68 @@
+package com.bludos.optimised.ui;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+
+public class BldoOptimisedScreen extends Screen {
+
+    private final Screen parent;
+
+    public BldoOptimisedScreen(Screen parent) {
+        super(Component.literal("Bldo Optimised"));
+        this.parent = parent;
+    }
+
+    @Override
+    protected void init() {
+
+        int centerX = this.width / 2;
+        int startY = this.height / 4;
+
+        this.addRenderableWidget(
+            Button.builder(Component.literal("Performance"), b -> {})
+                .bounds(centerX - 100, startY, 200, 20)
+                .build()
+        );
+
+        this.addRenderableWidget(
+            Button.builder(Component.literal("Rendering"), b -> {})
+                .bounds(centerX - 100, startY + 24, 200, 20)
+                .build()
+        );
+
+        this.addRenderableWidget(
+            Button.builder(Component.literal("Entities"), b -> {})
+                .bounds(centerX - 100, startY + 48, 200, 20)
+                .build()
+        );
+
+        this.addRenderableWidget(
+            Button.builder(Component.literal("Back"), b -> onClose())
+                .bounds(centerX - 100, this.height - 40, 200, 20)
+                .build()
+        );
+    }
+
+    @Override
+    public void render(GuiGraphics gfx, int mouseX, int mouseY, float partialTick) {
+        gfx.fill(0, 0, width, height, 0xAA000000);
+
+        super.render(gfx, mouseX, mouseY, partialTick);
+
+        gfx.drawCenteredString(
+            this.font,
+            this.title,
+            this.width / 2,
+            20,
+            0xFFFFFF
+        );
+    }
+
+    @Override
+    public void onClose() {
+        Minecraft.getInstance().setScreen(parent);
+    }
+}
